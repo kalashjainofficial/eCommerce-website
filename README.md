@@ -1,4 +1,4 @@
-# 🌟 NexusMart — Fullstack eCommerce Application
+# 🌟 Fullstack eCommerce Application
 
 A beautiful, feature-rich, and secure **Fullstack eCommerce Web Application** built with **React (Vite)** on the frontend and **Express.js (Node.js)** with **MongoDB Atlas** on the backend. It features secure JWT cookie-based session management, Google OAuth Login, OTP-based password reset via EmailJS, a detailed product catalog, interactive cart management, and order history tracking.
 
