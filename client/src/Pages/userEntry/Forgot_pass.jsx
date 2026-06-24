@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { useNavigate } from "react-router-dom";
 import { User_exist } from "../check/User_exist";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Forgot_pass = () => {
   User_exist();
@@ -31,7 +32,7 @@ const Forgot_pass = () => {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:3000/sendotp", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}/sendotp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,10 +52,10 @@ const Forgot_pass = () => {
       };
 
       await emailjs.send(
-        "service_1u8segw",
-        "template_ok2yj4m",
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_1u8segw",
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_ok2yj4m",
         templateParams,
-        "YajAGrBQL4Re_OGTm"
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YajAGrBQL4Re_OGTm"
       );
 
       setSuccess("OTP sent successfully!");
@@ -109,7 +110,7 @@ const Forgot_pass = () => {
 
       setLoading(true);
 
-      const response = await fetch("http://localhost:3000/forgotpass", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}/forgotpass`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

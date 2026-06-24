@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { productdetails } from "./utilities/go_to_productD";
 import toast, { Toaster } from "react-hot-toast";
 import { useApp } from "../context/AppContext";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -30,59 +31,67 @@ const Cart = () => {
     });
   };
 
-  useEffect(() => {
-    const getCart = async () => {
+ useEffect(() => {
+  const getCart = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/cart`, {
+        method: "GET",
+        credentials: "include",
+      });
+
+      const text = await response.text();
+      console.log("RAW RESPONSE:", text);
+      console.log("STATUS:", response.status);
+
+      let result;
       try {
-        const response = await fetch("http://localhost:3000/cart", {
-          method: "GET",
-          credentials: "include",
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          setError(result.message || "Failed to load cart");
-          return;
-        }
-
-        const groupedCart = [];
-
-        (result.cart || []).forEach((product) => {
-          const existing = groupedCart.find(
-            (item) => item._id === product._id
-          );
-
-          if (existing) {
-            existing.quantity += 1;
-            existing.totalValue = existing.quantity * existing.price;
-          } else {
-            groupedCart.push({
-              ...product,
-              quantity: 1,
-              totalValue: product.price,
-            });
-          }
-        });
-
-        setCart(groupedCart);
-
-        const totalItems = groupedCart.reduce(
-          (sum, item) => sum + item.quantity,
-          0
-        );
-        setCartCount(totalItems);
-      } catch (error) {
-        console.log(error);
-        setError("Could not load cart");
+        result = JSON.parse(text);
+      } catch (e) {
+        throw new Error("Server did not return JSON");
       }
-    };
 
-    getCart();
-  }, [setCartCount]);
+      if (!response.ok) {
+        setError(result.message || "Failed to load cart");
+        return;
+      }
 
+      const groupedCart = [];
+
+      (result.cart || []).forEach((product) => {
+        const existing = groupedCart.find(
+          (item) => item._id === product._id
+        );
+
+        if (existing) {
+          existing.quantity += 1;
+          existing.totalValue = existing.quantity * existing.price;
+        } else {
+          groupedCart.push({
+            ...product,
+            quantity: 1,
+            totalValue: product.price,
+          });
+        }
+      });
+
+      setCart(groupedCart);
+
+      const totalItems = groupedCart.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+      setCartCount(totalItems);
+    } catch (error) {
+      console.log("CART ERROR:", error);
+      setError("Could not load cart");
+    }
+  };
+
+  getCart();
+}, [setCartCount]);
   const place_order = async (product) => {
     try {
-      const response = await fetch("http://localhost:3000/order", {
+      const response = await fetch(`${API_BASE_URL}/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +118,7 @@ const Cart = () => {
 
   const add_one_item = async (product) => {
     try {
-      const response = await fetch("http://localhost:3000/cart", {
+      const response = await fetch(`${API_BASE_URL}/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,7 +158,7 @@ const Cart = () => {
 
   const remove_one_item = async (product) => {
     try {
-      const response = await fetch("http://localhost:3000/cart/removeone", {
+      const response = await fetch(`${API_BASE_URL}/cart/removeone`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -191,7 +200,7 @@ const Cart = () => {
 
   const remove_from_cart = async (product) => {
     try {
-      const response = await fetch("http://localhost:3000/cart", {
+      const response = await fetch(`${API_BASE_URL}/cart`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

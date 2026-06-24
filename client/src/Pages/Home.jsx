@@ -25,6 +25,9 @@ import toast, { Toaster } from "react-hot-toast";
 // total cart value
 import { useApp } from "../context/AppContext";
 
+// backend url 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 // 
 // main function ==========================================================
 // 
@@ -134,7 +137,7 @@ hover:shadow-md-50 px-5 py-2 text-sm font-medium text-amber-900 ring-1 ring-ambe
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/home", {
+        const response = await fetch(`${API_BASE_URL}/home`, {
           credentials: "include",
         });
 
@@ -163,7 +166,7 @@ hover:shadow-md-50 px-5 py-2 text-sm font-medium text-amber-900 ring-1 ring-ambe
   // Add a product to the shopping cart
   const add_to_cart = async (product) => {
     try {
-      const response = await fetch("http://localhost:3000/cart", {
+      const response = await fetch(`${API_BASE_URL}/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -191,7 +194,7 @@ hover:shadow-md-50 px-5 py-2 text-sm font-medium text-amber-900 ring-1 ring-ambe
   // Place an order for a product
   const place_order = async (product) => {
     try {
-      const response = await fetch("http://localhost:3000/order", {
+      const response = await fetch(`${API_BASE_URL}/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -4,6 +4,8 @@ import { User_exist } from "../check/User_exist";
 
 import Login_with_google from "./login_with_google";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 
 const LogIn = () => {
@@ -36,7 +38,7 @@ const LogIn = () => {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

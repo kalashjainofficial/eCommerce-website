@@ -28,7 +28,7 @@ const order = async (req, res) => {
             });
         }
 
-        const decoded = jwt.verify(token, "secret");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const email = decoded.email;
 
@@ -42,7 +42,7 @@ const order = async (req, res) => {
 
         // PUSH ORDER
         existingUser.orders.push({
-            productid: product._id
+            productId: product._id
         });
 
         await existingUser.save();
@@ -80,7 +80,7 @@ const all_orders = async (req, res) => {
             });
         }
 
-        const decoded = jwt.verify(token, "secret");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const email = decoded.email;
 
@@ -96,9 +96,9 @@ const all_orders = async (req, res) => {
 
         for (const item of existingUser.orders) {
 
-            console.log(item.productid);
+            console.log(item.productId);
 
-            const product = await Product.findById(item.productid);
+            const product = await Product.findById(item.productId);
 
             if (product) {
 

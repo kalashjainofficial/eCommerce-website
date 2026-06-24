@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Product } = require("./Productsdb")
 const { User } = require("./userData")
 const jwt = require("jsonwebtoken");
@@ -31,7 +32,7 @@ const add_to_cart = async (req, res) => {
 
         }
 
-        const decoded = jwt.verify(token, "secret");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const email = decoded.email;
 
@@ -82,7 +83,7 @@ const getcart = async (req, res) => {
 
         }
 
-        const decoded = jwt.verify(token, "secret");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const email = decoded.email;
 
@@ -97,6 +98,8 @@ const getcart = async (req, res) => {
         }
 
         const cartProducts = [];
+
+        console.log(existingUser.cart);
 
         for (const item of existingUser.cart) {
 
@@ -116,6 +119,8 @@ const getcart = async (req, res) => {
                 });
 
             }
+
+            
 
         }
 
@@ -147,7 +152,7 @@ const delete_cart = async (req, res) => {
             });
         }
 
-        const decoded = jwt.verify(token, "secret");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const email = decoded.email;
 
@@ -161,7 +166,7 @@ const delete_cart = async (req, res) => {
 
         // remove product from cart
         existingUser.cart = existingUser.cart.filter(
-            (item) => item.productId.toString() !== productid
+            (item) => item.productId && item.productId.toString() !== productid
         );
 
         await existingUser.save();
@@ -190,7 +195,7 @@ const remove_one_item = async (req, res) => {
             });
         }
 
-        const decoded = jwt.verify(token, "secret");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const email = decoded.email;
 
@@ -203,7 +208,7 @@ const remove_one_item = async (req, res) => {
         }
 
         const index = existingUser.cart.findIndex(
-            (item) => item.productId.toString() === productid
+            (item) => item.productId && item.productId.toString() === productid
         );
 
         if (index === -1) {

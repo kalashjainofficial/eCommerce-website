@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { User_exist } from "../check/User_exist";
 // login with google
 import Login_with_google from "./login_with_google";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const SignUp = () => {
   User_exist();
 
@@ -38,7 +40,7 @@ const SignUp = () => {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:3000/signup", {
+      const response = await fetch(`${API_BASE_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Top_navbar = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Top_navbar = () => {
   useEffect(() => {
     const getCartCount = async () => {
       try {
-        const response = await fetch("http://localhost:3000/cart", {
+        const response = await fetch(`${API_BASE_URL}/cart`, {
           method: "GET",
           credentials: "include",
         });
@@ -54,7 +55,7 @@ const Top_navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:3000/logout", {
+      await fetch(`${API_BASE_URL}/logout`, {
         method: "POST",
         credentials: "include",
       });

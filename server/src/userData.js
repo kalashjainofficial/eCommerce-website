@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
 const { Product, connectDB } = require("./Productsdb");
 const bcrypt = require("bcrypt");
@@ -32,7 +33,7 @@ const userdataschema = new mongoose.Schema({
 
     orders: [
         {
-            productid: {
+            productId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "productCollection"
             }
@@ -60,7 +61,7 @@ const signup = async (req, res) => {
         }
 
         // HASH PASSWORD
-        const encryptedPassword = await bcrypt.hash(password, 10);
+        const encryptedPassword = await bcrypt.hash(password, Number(process.env.ENCRYPT_PASS));
 
         const newUser = new User({
             name,
@@ -72,7 +73,7 @@ const signup = async (req, res) => {
 
         const token = jwt.sign(
             { email },
-            "secret",
+            process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
 
@@ -128,7 +129,7 @@ const login = async (req, res) => {
 
         res.cookie(
             "token",
-            jwt.sign({ email }, "secret", { expiresIn: "1d" }),
+            jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1d" }),
             {
                 httpOnly: true,
                 secure: false,
@@ -260,7 +261,7 @@ const handleGoogleLogin = async (req, res) => {
 
             const token = jwt.sign(
                 { email: user.email },
-                "secret",
+                process.env.JWT_SECRET,
                 { expiresIn: "1d" }
             );
 
@@ -291,7 +292,7 @@ const handleGoogleLogin = async (req, res) => {
 
         const token = jwt.sign(
             { email: user.email },
-            "secret",
+            process.env.JWT_SECRET,
             { expiresIn: "1d" }
         );
 

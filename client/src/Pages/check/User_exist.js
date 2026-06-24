@@ -11,7 +11,7 @@ export const User_exist = () => {
 
             try {
 
-                const response = await fetch("http://localhost:3000/home", {
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/home`, {
                     credentials: "include"
                 });
 

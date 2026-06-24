@@ -4,7 +4,7 @@ import {
   productdetails,
 } from "./utilities/go_to_productD";
 
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Orders() {
      const popup = (message) => {
@@ -31,7 +31,7 @@ const [error, setError] = useState("");
     useEffect(() => {
       const getOrder = async () => {
         try {
-          const response = await fetch("http://localhost:3000/order", {
+          const response = await fetch(`${API_BASE_URL}/order`, {
             method: "GET",
             credentials: "include",
           });

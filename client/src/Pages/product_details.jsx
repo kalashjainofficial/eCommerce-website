@@ -5,6 +5,8 @@ import toast, { Toaster } from "react-hot-toast";
 import { InnerImageZoom } from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/styles.min.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 // total cart value
 import { useApp } from "../context/AppContext";
@@ -17,7 +19,7 @@ function Product_Details() {
 
   const popup = (message) => {
     toast.success(message, {
-      duration: 1800,
+      duration: 1800, 
       style: {
         borderRadius: "16px",
         background: "rgba(17, 24, 39, 0.95)",
@@ -38,7 +40,7 @@ function Product_Details() {
     const getProduct = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/product/${productid}`,
+          `${API_BASE_URL}/product/${productid}`,
           {
             method: "GET",
             credentials: "include",
@@ -86,7 +88,7 @@ function Product_Details() {
 
   const addToCart = async () => {
     try {
-      const response = await fetch("http://localhost:3000/cart", {
+      const response = await fetch(`${API_BASE_URL}/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +115,7 @@ function Product_Details() {
 
   const buyNow = async () => {
     try {
-      const response = await fetch("http://localhost:3000/order", {
+      const response = await fetch(`${API_BASE_URL}/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

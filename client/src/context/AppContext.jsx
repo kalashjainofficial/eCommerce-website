@@ -20,7 +20,7 @@ export const AppProvider = ({
     <AppContext.Provider
       value={{
         cartCount,
-        setCartCount,
+        setCartCount,   
         searchTerm,
         setSearchTerm,
       }}

@@ -49,7 +49,7 @@ const logout_router = require("./router/logout_router")
 
 // MIDDLEWARES
 app.use(cors({
-    origin: /^http:\/\/localhost:\d+$/,
+    origin:process.env.FRONTEND_URL,
     credentials: true
 }));
 

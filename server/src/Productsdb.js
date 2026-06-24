@@ -1,13 +1,18 @@
-// connect to db (connectDB) -> schema (productSchema) -> model (Product) -> export both connectDB and Product
-
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const connectDB = async () => {
   try {
+    console.log("Connecting to MongoDB...");
+    console.log(process.env.MONGO_URI);
+
     const conn = await mongoose.connect(process.env.MONGO_URI);
+
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+    console.error("========== FULL ERROR ==========");
+    console.error(error);
+    console.error("================================");
     process.exit(1);
   }
 };
@@ -17,20 +22,20 @@ const reviewSchema = new mongoose.Schema({
   comment: { type: String, required: true },
   date: { type: Date, required: true },
   reviewerName: { type: String, required: true },
-  reviewerEmail: { type: String, required: true }
+  reviewerEmail: { type: String, required: true },
 });
 
 const dimensionsSchema = new mongoose.Schema({
   width: Number,
   height: Number,
-  depth: Number
+  depth: Number,
 });
 
 const metaSchema = new mongoose.Schema({
   createdAt: Date,
   updatedAt: Date,
   barcode: String,
-  qrCode: String
+  qrCode: String,
 });
 
 const productSchema = new mongoose.Schema({
@@ -51,16 +56,19 @@ const productSchema = new mongoose.Schema({
   shippingInformation: String,
   availabilityStatus: {
     type: String,
-    enum: ["In Stock", "Out of Stock", "Low Stock"]
+    enum: ["In Stock", "Out of Stock", "Low Stock"],
   },
   reviews: [reviewSchema],
   returnPolicy: String,
   minimumOrderQuantity: Number,
   meta: metaSchema,
   images: [String],
-  thumbnail: String
+  thumbnail: String,
 });
 
-const Product = mongoose.model("productCollection", productSchema, "productCollection");
+// Prevent overwrite error during hot reload
+const Product =
+  mongoose.models.Product ||
+  mongoose.model("Product", productSchema, "productCollection");
 
 module.exports = { Product, connectDB };
