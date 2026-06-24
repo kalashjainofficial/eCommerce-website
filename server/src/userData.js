@@ -80,6 +80,7 @@ const signup = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
+            sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000
         });
 
@@ -133,6 +134,7 @@ const login = async (req, res) => {
             {
                 httpOnly: true,
                 secure: false,
+                sameSite: "none",
                 maxAge: 24 * 60 * 60 * 1000
             }
         );
@@ -268,6 +270,7 @@ const handleGoogleLogin = async (req, res) => {
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: false,
+                sameSite: "none",
                 maxAge: 24 * 60 * 60 * 1000
             });
 
@@ -299,6 +302,7 @@ const handleGoogleLogin = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
+            sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000
         });
 
