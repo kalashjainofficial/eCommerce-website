@@ -79,7 +79,7 @@ const signup = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000
         });
@@ -133,7 +133,7 @@ const login = async (req, res) => {
             jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1d" }),
             {
                 httpOnly: true,
-                secure: false,
+                secure: true,
                 sameSite: "none",
                 maxAge: 24 * 60 * 60 * 1000
             }
@@ -269,7 +269,7 @@ const handleGoogleLogin = async (req, res) => {
 
             res.cookie("token", token, {
                 httpOnly: true,
-                secure: false,
+                secure: true,
                 sameSite: "none",
                 maxAge: 24 * 60 * 60 * 1000
             });
@@ -301,7 +301,7 @@ const handleGoogleLogin = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: "none",
             maxAge: 24 * 60 * 60 * 1000
         });
